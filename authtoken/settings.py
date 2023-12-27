@@ -132,3 +132,6 @@ REST_FRAMEWORK = {
             'rest_framework.authentication.SessionAuthentication',
         ]
 }
+
+# Default expiration time
+# TOKEN_EXPIRE = timedelta(minutes=5)

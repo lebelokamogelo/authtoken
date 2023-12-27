@@ -24,7 +24,7 @@ class TokenAuthentication(BaseAuthentication):
 
             token = hashlib.sha256(auth[1]).hexdigest()[:32]
         except ValueError:
-            msg = 'invalid auth token'
+            msg = 'Invalid auth token'
             raise AuthenticationFailed(msg)
 
         return self.authenticate_credentials(token, request)
@@ -38,7 +38,7 @@ class TokenAuthentication(BaseAuthentication):
         try:
             user = Token.objects.get(token=token).user
         except Token.DoesNotExist:
-            raise exceptions.AuthenticationFailed('invalid auth token')
+            raise exceptions.AuthenticationFailed('Invalid auth token')
 
         if user is None or not user.is_active:
             raise exceptions.AuthenticationFailed('Authentication failed')

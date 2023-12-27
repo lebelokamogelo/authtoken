@@ -4,22 +4,31 @@ from rest_framework import status
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.response import Response
 
-from .tokens import generate_token
+from .models import Token
+from .tokens import obtain_authentication_token
 
 
-@api_view(['POST', 'GET'])
+@api_view(['POST'])
 def token(request):
-    if request.method == 'POST':
+    user = request.user if request.user.is_authenticated else authenticate(request, **request.data)
+    if user:
+        token = obtain_authentication_token(user)
+        return Response({"Token": token}, status=status.HTTP_200_OK)
 
-        user = authenticate(request, **request.data)
-        if user:
-            token = generate_token(user)
-            return Response({"Token": token}, status=status.HTTP_200_OK)
-
-    return Response({"error": "Unable to log in with provided credentials."}, status=status.HTTP_401_UNAUTHORIZED)
+    return Response({"error":
+                         "Please ensure your credentials are valid."},
+                    status=status.HTTP_400_BAD_REQUEST)
 
 
-@api_view(['GET', 'POST'])
+@api_view(['POST'])
 @permission_classes([permissions.IsAuthenticated])
 def test(request):
+    try:
+        token = Token.objects.get(user=request.user)
+        if token.is_valid():
+            return Response({"error": "Access token has expired."},
+                            status=status.HTTP_401_UNAUTHORIZED)
+    except Token.DoesNotExist:
+        return Response({"error": "Access token does not exist."}, status=status.HTTP_404_NOT_FOUND)
+
     return Response(status=status.HTTP_200_OK)
