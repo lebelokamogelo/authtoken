@@ -5,7 +5,6 @@ from rest_framework import status
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 
-from .models import Token
 from .tokens import obtain_authentication_token
 
 
@@ -46,4 +45,3 @@ def refresh_token(request):
 
     new_token = obtain_authentication_token(request.user)
     return Response({"token": new_token}, status=status.HTTP_200_OK)
-
