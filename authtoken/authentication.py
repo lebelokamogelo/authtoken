@@ -1,7 +1,9 @@
 import hashlib
 
+from django.utils.translation import gettext_lazy as _
 from rest_framework import exceptions
-from rest_framework.authentication import BaseAuthentication, get_authorization_header
+from rest_framework.authentication import (BaseAuthentication,
+                                           get_authorization_header)
 
 from .models import Token
 
@@ -17,7 +19,8 @@ class TokenAuthentication(BaseAuthentication):
             msg = _('Invalid basic header. No credentials provided.')
             raise exceptions.AuthenticationFailed(msg)
         elif len(auth) > 2:
-            msg = _('Invalid basic header. Credentials string should not contain spaces.')
+            msg = _('Invalid basic header. Credentials string '
+                    'should not contain spaces.')
             raise exceptions.AuthenticationFailed(msg)
 
         try:
@@ -25,7 +28,7 @@ class TokenAuthentication(BaseAuthentication):
             token = hashlib.sha256(auth[1]).hexdigest()[:32]
         except ValueError:
             msg = 'Invalid auth token'
-            raise AuthenticationFailed(msg)
+            raise exceptions.AuthenticationFailed(msg)
 
         return self.authenticate_credentials(token, request)
 

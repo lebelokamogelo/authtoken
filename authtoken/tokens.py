@@ -24,7 +24,8 @@ def obtain_authentication_token(user=None):
         if instance:
             instance.token = token
             instance.expire = timezone.now() + (
-                settings.TOKEN_EXPIRE if hasattr(settings, 'TOKEN_EXPIRE') else timedelta(minutes=5))
+                settings.TOKEN_EXPIRE if hasattr(settings, 'TOKEN_EXPIRE')
+                else timedelta(minutes=5))
             instance.save()
 
     except Token.DoesNotExist:

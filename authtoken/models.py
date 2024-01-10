@@ -10,7 +10,8 @@ User = settings.AUTH_USER_MODEL
 class Token(models.Model):
     user = models.OneToOneField(User, on_delete=models.SET_NULL, null=True)
     token = models.CharField(max_length=255)
-    expire = models.DateTimeField(default=timezone.now() + timedelta(minutes=5))
+    expire = models.DateTimeField(
+        default=timezone.now() + timedelta(minutes=5))
     updated = models.DateTimeField(auto_now=True)
     created = models.DateTimeField(auto_now_add=True)
 
