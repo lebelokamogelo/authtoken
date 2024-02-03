@@ -4,10 +4,7 @@ This library provides token-based authentication for Django REST Framework appli
 
 ### Obtaining a Token
 
-To obtain an authentication token, send a POST request to the /api/token/ endpoint with valid user credentials. If the credentials are correct, the endpoint will return a token.
-    
-    POST /api/token/
-    Content-Type: application/json
+To obtain an authentication token, send a POST request to the `/api/token/` endpoint with valid user credentials. If the credentials are correct, the endpoint will return a token.
     
     {
         "username": "user",
@@ -24,15 +21,11 @@ Response:
 
 To refresh an authentication token, send a POST request to the /api/token/refresh/ endpoint with the current token. If the token is valid, the endpoint will return a new token.
 
-    POST /api/token/refresh/
-    Content-Type: application/json
     {
         "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoxLCJleHAiOjE2NDYwMjA1NjN9.MqCr6iGn7yqMw2uGwIsdz0C8PVTp4vH0Fam0EbgPEKo"
     }
 
 Response:
-
-    json
     
     {
         "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoxLCJleHAiOjE2NDYwMjA1NjN9.MqCr6iGn7yqMw2uGwIsdz0C8PVTp4vH0Fam0EbgPEKo"
